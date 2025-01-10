@@ -1,0 +1,35 @@
+{
+  "name": "golf-club-fitting",
+  "version": "1.0.0",
+  "description": "REST API for Golf Club Fitting Web App",
+  "main": "dist/app.js",
+  "repository": "https://github.com/francisamidu/Golf-Club-Fitting",
+  "author": "Francis Amidu",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-list-routes": "^1.2.4",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "~10.0.28-alpha",
+    "@types/cors": "~2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "~9.0.7",
+    "@types/node": "^22.10.5",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "scripts": {
+    "start": "node dist/app.js",
+    "build": "tsc",
+    "dev": "nodemon src/app.ts",
+    "test": "echo 'No test specified' && exit 0"
+  }
+}

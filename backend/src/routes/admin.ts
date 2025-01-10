@@ -1,0 +1,178 @@
+import express, { Request, Response } from "express";
+import { Fitting, Message, User } from "../models";
+import { authenticate } from "../middlewares";
+import { FittingRequestModel } from "../models/FittingRequests";
+import { HistoryModel } from "../models/FittingHistory";
+import { Schedule } from "../models/FittingSchedule";
+
+const router = express.Router({});
+
+router.put(
+  "/getting-started",
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { message } = req.body;
+      await Message.findOneAndUpdate(
+        { message },
+        { message },
+        { new: true, upsert: true }
+      );
+      if (!res.headersSent) {
+        res.send({ message: "The message was successfully updated" });
+      }
+    } catch (error) {
+      if (!res.headersSent) {
+        res
+          .status(500)
+          .send({ message: "Sorry we couldn't update the message. Try again" });
+      }
+    }
+  }
+);
+
+router.put(
+  "/fittings",
+  authenticate,
+  async (req: Request, res: Response): Promise<void> => {
+    const { status } = req.body;
+    try {
+      const fitting = await Fitting.findByIdAndUpdate(
+        req.query.id,
+        { status },
+        { new: true }
+      );
+      if (!fitting) {
+        if (!res.headersSent) {
+          res.status(404).send({ message: "Fitting not found" });
+        }
+      } else {
+        if (!res.headersSent) {
+          res.send(fitting);
+        }
+      }
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).send({ message: "Error updating fitting status" });
+      }
+    }
+  }
+);
+
+router.put(
+  "/consumer/:id",
+  async (req: Request, res: Response): Promise<void> => {
+    const updates = req.body;
+    try {
+      const user = await User.findByIdAndUpdate(req.params.id, updates, {
+        new: true,
+      }).select("-password");
+      if (!user) {
+        if (!res.headersSent) {
+          res.status(404).send({ message: "User not found" });
+        }
+      } else {
+        if (!res.headersSent) {
+          res.send(user);
+        }
+      }
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).send({ message: "Error updating user profile" });
+      }
+    }
+  }
+);
+
+router.get(
+  "/getting-started",
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const result = await Message.findOne();
+      if (!res.headersSent) {
+        res.send({ message: result?.message });
+      }
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).send({ message: "Error fetching message" });
+      }
+    }
+  }
+);
+
+router.get("/fittings", async (_: Request, res: Response): Promise<void> => {
+  try {
+    const fittings = await Fitting.find();
+    if (!res.headersSent) {
+      res.send(fittings);
+    }
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).send({ message: "Error fetching fittings" });
+    }
+  }
+});
+
+router.get(
+  "/fitting-schedule",
+  async (_: Request, res: Response): Promise<void> => {
+    try {
+      const fittings = await Schedule.find();
+      if (!res.headersSent) {
+        res.send(fittings);
+      }
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).send({ message: "Error fetching fittings" });
+      }
+    }
+  }
+);
+
+router.get(
+  "/fitting-requests",
+  async (_: Request, res: Response): Promise<void> => {
+    try {
+      const fittings = await FittingRequestModel.find();
+      if (!res.headersSent) {
+        res.send(fittings);
+      }
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).send({ message: "Error fetching fittings" });
+      }
+    }
+  }
+);
+
+router.get(
+  "/fitting-history",
+  async (_: Request, res: Response): Promise<void> => {
+    try {
+      const fittings = await HistoryModel.find();
+      if (!res.headersSent) {
+        res.send(fittings);
+      }
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).send({ message: "Error fetching fittings" });
+      }
+    }
+  }
+);
+
+router.get("/schedule", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const fittings = await Fitting.find({
+      status: { $in: ["scheduled", "completed", "requested"] },
+    });
+    if (!res.headersSent) {
+      res.send(fittings);
+    }
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).send({ message: "Error fetching fitting schedule" });
+    }
+  }
+});
+
+export default router;
