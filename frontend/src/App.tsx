@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ProtectedRoute } from 'components'
 import Login from 'pages/Login'
 import {

@@ -10,9 +10,7 @@ const FittingTasks = () => {
   const params = useParams()
   const id = params['id']
   const task = fittingRequests.find((request) => request._id == id)
-  console.log({ fittings, task })
 
-  // Function to handle task actions
   const handleTaskAction = async (action: Status) => {
     const _task = {
       _id: id,
