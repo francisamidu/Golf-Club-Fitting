@@ -78,7 +78,7 @@ export const getFittingSchedule = async (token: string) => {
 export const updateAppointment = async (token: string, fitting: any) => {
   try {
     const response = await axios.post(
-      `${API_URL}/admin/fittings/${fitting.fittingId}`,
+      `${API_URL}/admin/fittings`,
       {
         _id: fitting._id,
         fittingId: fitting.fittingId,
@@ -86,8 +86,7 @@ export const updateAppointment = async (token: string, fitting: any) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`
         }
       }
     )

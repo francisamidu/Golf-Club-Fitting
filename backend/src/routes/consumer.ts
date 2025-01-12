@@ -121,10 +121,35 @@ router.post("/schedule", async (req: Request, res: Response) => {
     status: Status.Submitted,
   });
 
-  await schedule.save();
-  await request.save();
-  await task.save();
-  await progress.save();
+  await Promise.all([
+    progress.save(),
+    task.save(),
+    request.save(),
+    schedule.save(),
+  ]);
+
+  const [
+    retrievedProgress,
+    retrievedTask,
+    retrievedRequest,
+    retrievedSchedule,
+  ] = await Promise.all([
+    Progress.findOne({ fittingId: fitting._id }),
+    HistoryModel.findOne({ fittingId: fitting._id }),
+    FittingRequestModel.findOne({ fittingId: fitting._id }),
+    Schedule.findOne({ fittingId: fitting._id }),
+  ]);
+
+  if (
+    !retrievedProgress ||
+    !retrievedTask ||
+    !retrievedRequest ||
+    !retrievedSchedule
+  ) {
+    console.error("One or more objects were not saved or retrieved properly.");
+  } else {
+    console.log("All related objects saved and verified successfully.");
+  }
 
   res.status(201).send(fitting);
   return;

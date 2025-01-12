@@ -6,7 +6,16 @@ import { toast } from 'react-toastify'
 import { updateAppointment } from 'api/admin'
 
 const FittingTasks = () => {
-  const { fittings, fittingRequests } = useFittingContext()
+  const {
+    fittings,
+    fittingRequests,
+    fittingHistory,
+    fittingSchedule,
+    setFittingHistory,
+    setFittingRequests,
+    setFittingSchedule,
+    setFittings
+  } = useFittingContext()
   const params = useParams()
   const id = params['id']
   const task = fittingRequests.find((request) => request._id == id)
@@ -19,7 +28,38 @@ const FittingTasks = () => {
     }
     try {
       const token = localStorage.getItem('token') || ''
-      await updateAppointment(token, _task)
+      const { fitting, history, request, schedule } = await updateAppointment(
+        token,
+        _task
+      )
+      const newFittings = fittings.map((_fitting) => {
+        if (_fitting._id == fitting._id) {
+          return fitting
+        }
+        return _fitting
+      })
+      const newFittingHistory = fittingHistory.map((_history) => {
+        if (_history._id == history._id) {
+          return history
+        }
+        return _history
+      })
+      const newFittingRequests = fittingRequests.map((_request) => {
+        if (_request._id == request._id) {
+          return request
+        }
+        return _request
+      })
+      const newFittingSchedule = fittingSchedule.map((_schedule) => {
+        if (_schedule._id == schedule._id) {
+          return schedule
+        }
+        return _schedule
+      })
+      setFittings(newFittings)
+      setFittingHistory(newFittingHistory)
+      setFittingRequests(newFittingRequests)
+      setFittingSchedule(newFittingSchedule)
       toast.success('The appointment status has been updated')
     } catch (error) {
       const handledError = handleError(error)

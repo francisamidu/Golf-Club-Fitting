@@ -11,10 +11,10 @@ const FittingSchedule = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {schedule.map((item) => {
           const statusStyles = {
-            [Status.Completed]: 'border-blue-500',
+            [Status.Completed]: 'border-green-500',
             [Status.Submitted]: 'border-gray-400',
             [Status.Canceled]: 'border-red-500',
-            [Status.Scheduled]: 'border-red-500'
+            [Status.Scheduled]: 'border-blue-500'
           }
 
           return (
@@ -39,10 +39,12 @@ const FittingSchedule = () => {
                   <span
                     className={`${
                       item.status === Status.Completed
-                        ? 'text-blue-500'
-                        : item.status === Status.Submitted
-                          ? 'text-gray-500'
-                          : 'text-red-500'
+                        ? 'text-green-500'
+                        : item.status === Status.Scheduled
+                          ? 'text-blue-500'
+                          : item.status === Status.Canceled
+                            ? 'text-red-500'
+                            : 'text-yellow-500'
                     }`}
                   >
                     {item.status}

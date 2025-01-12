@@ -5,11 +5,13 @@ import {
   getFittings
 } from 'api/admin'
 import React, {
+  Dispatch,
   createContext,
   useContext,
   useState,
   useEffect,
-  ReactNode
+  ReactNode,
+  SetStateAction
 } from 'react'
 
 type FittingRequest = {
@@ -29,7 +31,7 @@ export enum Status {
   Completed = 'Completed',
   Canceled = 'Canceled'
 }
-type FittingTask = {
+type Fitting = {
   _id: string
   customerName: string
   email: string
@@ -56,24 +58,28 @@ type FittingHistory = {
   status: Status
   completedAt: string
 }
-type Fitting = {}
 
 type FittingContextState = {
   fittings: Fitting[]
   fittingRequests: FittingRequest[]
-  fittingTasks: FittingTask[]
   fittingSchedule: FittingSchedule[]
   fittingHistory: FittingHistory[]
-  // refreshData: () => void
+  setFittings: Dispatch<SetStateAction<Fitting[]>>
+  setFittingHistory: Dispatch<SetStateAction<FittingHistory[]>>
+  setFittingRequests: Dispatch<SetStateAction<FittingRequest[]>>
+  setFittingSchedule: Dispatch<SetStateAction<FittingSchedule[]>>
 }
 
 // Default context data
 const defaultState: FittingContextState = {
   fittings: [],
   fittingRequests: [],
-  fittingTasks: [],
   fittingSchedule: [],
-  fittingHistory: []
+  fittingHistory: [],
+  setFittings: () => {},
+  setFittingHistory: () => {},
+  setFittingRequests: () => {},
+  setFittingSchedule: () => {}
   // refreshData: () => {}
 }
 
@@ -84,9 +90,8 @@ const FittingContext = createContext<FittingContextState>(defaultState)
 export const FittingProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
-  const [fittings, setFittings] = useState<FittingRequest[]>([])
+  const [fittings, setFittings] = useState<Fitting[]>([])
   const [fittingRequests, setFittingRequests] = useState<FittingRequest[]>([])
-  const [fittingTasks, setFittingTasks] = useState<FittingTask[]>([])
   const [fittingSchedule, setFittingSchedule] = useState<FittingSchedule[]>([])
   const [fittingHistory, setFittingHistory] = useState<FittingHistory[]>([])
   const token = localStorage.getItem('token') || ''
@@ -97,11 +102,6 @@ export const FittingProvider: React.FC<{ children: ReactNode }> = ({
   const fetchFittingRequests = async () => {
     const requests = await getFittingRequests(token)
     setFittingRequests(requests)
-  }
-
-  const fetchFittingTasks = async () => {
-    const tasks = await getFittings(token)
-    setFittingTasks(tasks)
   }
 
   const fetchFittingSchedule = async () => {
@@ -118,7 +118,6 @@ export const FittingProvider: React.FC<{ children: ReactNode }> = ({
   const refreshData = () => {
     fetchFittings()
     fetchFittingRequests()
-    fetchFittingTasks()
     fetchFittingSchedule()
     fetchFittingHistory()
   }
@@ -136,9 +135,12 @@ export const FittingProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         fittings,
         fittingRequests,
-        fittingTasks,
         fittingSchedule,
-        fittingHistory
+        fittingHistory,
+        setFittings,
+        setFittingHistory,
+        setFittingRequests,
+        setFittingSchedule
         // refreshData
       }}
     >

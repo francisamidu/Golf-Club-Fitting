@@ -16,11 +16,9 @@ const ScheduleSchema: Schema = new Schema({
   customerName: { type: String, required: true },
   status: {
     type: String,
-    enum: Object.values(Status),
-    required: true,
+    enum: ["Submitted", "Scheduled", "Completed", "Canceled"],
+    default: "Submitted",
   },
 });
 
-export const Schedule =
-  mongoose.models.Schedule ||
-  mongoose.model<ISchedule>("Schedule", ScheduleSchema);
+export const Schedule = mongoose.model<ISchedule>("Schedule", ScheduleSchema);

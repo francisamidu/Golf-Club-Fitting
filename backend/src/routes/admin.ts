@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { Fitting, Message, Progress, User } from "../models";
-import { authenticate } from "../middlewares";
 import { FittingRequestModel } from "../models/FittingRequests";
 import { HistoryModel } from "../models/FittingHistory";
 import { Schedule } from "../models/FittingSchedule";
@@ -31,65 +30,52 @@ router.put(
   }
 );
 
-router.post(
-  "/fittings",
-  authenticate,
-  async (req: Request, res: Response): Promise<void> => {
-    let { status, fittingId: _id } = req.body;
-    const fittingId = mongoose.Types.ObjectId.createFromHexString(_id);
-    try {
-      const fitting = await Fitting.findByIdAndUpdate(
-        fittingId,
-        { status },
-        { new: true }
-      );
-      const progress = await Progress.findByIdAndUpdate(
-        fittingId,
-        {
-          steps: {
-            [status]: true,
-          },
-        },
-        { new: true }
-      );
-      const _p = await Progress.find();
-      console.log(_p);
-      const history = await HistoryModel.findByIdAndUpdate(
-        fittingId,
-        {
-          status,
-        },
-        { new: true }
-      );
-      const request = await FittingRequestModel.findByIdAndUpdate(
-        fittingId,
-        {
-          status,
-        },
-        { new: true }
-      );
-      const schedule = await Schedule.findByIdAndUpdate(
-        fittingId,
-        { status },
-        { new: true }
-      );
-      if (!fitting) {
-        if (!res.headersSent) {
-          res.status(404).send({ message: "Fitting not found" });
-        }
-      } else {
-        if (!res.headersSent) {
-          res.send({ fitting, progress, history, request, schedule });
-        }
-      }
-    } catch (error) {
-      console.log(error);
+router.post("/fittings", async (req: Request, res: Response): Promise<void> => {
+  let { status, fittingId: _id } = req.body;
+  const fittingId = mongoose.Types.ObjectId.createFromHexString(_id);
+  try {
+    const fitting = await Fitting.findByIdAndUpdate(
+      fittingId,
+      { status },
+      { new: true }
+    );
+
+    const [progress, history, request, schedule] = await Promise.all([
+      Progress.findOne({ fittingId }),
+      HistoryModel.findOne({ fittingId }),
+      FittingRequestModel.findOne({ fittingId }),
+      Schedule.findOne({ fittingId }),
+    ]);
+
+    //Update all status for the related objects
+    progress && (progress.status = status);
+    history && (history.status = status);
+    request && (request.status = status);
+    schedule && (schedule.status = status);
+
+    await Promise.all([
+      progress?.save(),
+      history?.save(),
+      request?.save(),
+      schedule?.save(),
+    ]);
+
+    if (!fitting) {
       if (!res.headersSent) {
-        res.status(500).send({ message: "Error updating fitting status" });
+        res.status(404).send({ message: "Fitting not found" });
+      }
+    } else {
+      if (!res.headersSent) {
+        res.send({ fitting, progress, history, request, schedule });
       }
     }
+  } catch (error) {
+    console.log(error);
+    if (!res.headersSent) {
+      res.status(500).send({ message: "Error updating fitting status" });
+    }
   }
-);
+});
 
 router.put(
   "/consumer/:id",

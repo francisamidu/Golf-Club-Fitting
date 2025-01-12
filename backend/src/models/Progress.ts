@@ -1,26 +1,17 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { Status } from "./Fitting";
 
 export interface IProgress extends Document {
-  fittingId: mongoose.Types.ObjectId;
-  steps: {
-    Submitted: boolean;
-    Scheduled: boolean;
-    Canceled: boolean;
-    Completed: boolean;
-  };
+  fittingId: string;
+  status: Status;
 }
 
 const ProgressSchema: Schema = new Schema({
-  fittingId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Fitting",
-    required: true,
-  },
-  steps: {
-    Submitted: { type: Boolean, default: false },
-    Scheduled: { type: Boolean, default: false },
-    Canceled: { type: Boolean, default: false },
-    Completed: { type: Boolean, default: false },
+  fittingId: { type: String, required: true },
+  status: {
+    type: String,
+    enum: ["Submitted", "Scheduled", "Completed", "Canceled"],
+    default: "Submitted",
   },
 });
 

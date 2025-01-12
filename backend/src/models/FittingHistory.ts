@@ -3,28 +3,22 @@ import { Status } from "./Fitting";
 
 export interface IHistory extends Document {
   customerName: string;
-  date: Date | string;
+  date: string;
   fittingId: string;
-  status: Status;
   completedAt: string;
+  status: Status;
 }
 
 const HistorySchema: Schema = new Schema({
   customerName: { type: String, required: true },
   date: { type: Schema.Types.Mixed, required: true },
-  fittingId: {
-    type: mongoose.Types.ObjectId,
-    ref: "Task",
-    required: true,
-  },
+  fittingId: { type: String, required: true },
   status: {
     type: String,
-    enum: Object.values(Status),
-    required: true,
+    enum: ["Submitted", "Scheduled", "Completed", "Canceled"],
+    default: "Submitted",
   },
   completedAt: { type: String, required: true },
 });
 
-export const HistoryModel =
-  mongoose.models.HistoryModel ||
-  mongoose.model<IHistory>("History", HistorySchema);
+export const HistoryModel = mongoose.model<IHistory>("History", HistorySchema);

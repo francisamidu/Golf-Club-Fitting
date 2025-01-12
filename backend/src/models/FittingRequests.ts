@@ -22,11 +22,12 @@ const FittingRequestSchema: Schema = new Schema({
   receivedAt: { type: String, required: true },
   status: {
     type: String,
-    enum: Object.values(Status),
-    required: true,
+    enum: ["Submitted", "Scheduled", "Completed", "Canceled"],
+    default: "Submitted",
   },
 });
 
-export const FittingRequestModel =
-  mongoose.models.FittingRequestModel ||
-  mongoose.model<IRequest>("FittingRequest", FittingRequestSchema);
+export const FittingRequestModel = mongoose.model<IRequest>(
+  "FittingRequest",
+  FittingRequestSchema
+);
