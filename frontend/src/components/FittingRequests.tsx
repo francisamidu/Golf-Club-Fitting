@@ -10,7 +10,7 @@ const FittingRequests = () => {
   const navigate = useNavigate()
 
   const handleRowClick = (id: string) => {
-    navigate(`/dashboard/fitting-tasks/${id}`)
+    navigate(`/dashboard/tasks/${id}`)
   }
 
   return (

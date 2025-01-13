@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Status, useFittingContext } from 'context/FittingsContext'
 import { formatDate } from 'utils/formatDate'
 import { formatTime } from 'utils/formatTime'

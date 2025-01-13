@@ -22,14 +22,14 @@ const MainContent: React.FC = () => {
         <Routes>
           <Route path="/getting-started" element={<GettingStarted />} />
           <Route path="/schedule/*" element={<ScheduleComponent />} />
-          <Route path="/fitting-progress" element={<FittingProgress />} />
+          <Route path="/progress" element={<FittingProgress />} />
           <Route path="/account-history" element={<AccountHistory />} />
           <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/getting-started" element={<GettingStarted />} />
-          <Route path="/fitting-requests/" element={<FittingRequests />} />
-          <Route path="/fitting-tasks/:id" element={<FittingTasks />} />
-          <Route path="/fitting-schedule" element={<FittingSchedule />} />
-          <Route path="/fitting-history" element={<FittingHistory />} />
+          <Route path="/requests/" element={<FittingRequests />} />
+          <Route path="/tasks/:id" element={<FittingTasks />} />
+          <Route path="/schedule" element={<FittingSchedule />} />
+          <Route path="/history" element={<FittingHistory />} />
           <Route path="/customer-profiles" element={<CustomerProfiles />} />
           <Route path="*" element={<Home />} />
         </Routes>

@@ -20,8 +20,8 @@ const Sidebar: React.FC = () => {
       text: 'Schedule a Fitting'
     },
     {
-      to: '/dashboard/fitting-progress',
-      text: 'Fitting Progress'
+      to: '/dashboard/progress',
+      text: 'Progress'
     },
     {
       to: '/dashboard/account-history',
@@ -45,20 +45,20 @@ const Sidebar: React.FC = () => {
           text: 'Getting Started'
         },
         {
-          to: '/dashboard/fitting-requests',
-          text: 'Fitting Requests'
+          to: '/dashboard/requests',
+          text: 'Requests'
         },
         {
-          to: '/dashboard/fitting-tasks',
-          text: 'Fitting Tasks'
+          to: '/dashboard/tasks',
+          text: 'Tasks'
         },
         {
-          to: '/dashboard/fitting-schedule',
-          text: 'Fitting Schedule'
+          to: '/dashboard/schedule',
+          text: 'Schedule'
         },
         {
-          to: '/dashboard/fitting-history',
-          text: 'Fitting History'
+          to: '/dashboard/history',
+          text: 'History'
         },
         {
           to: '/dashboard/customer-profiles',
