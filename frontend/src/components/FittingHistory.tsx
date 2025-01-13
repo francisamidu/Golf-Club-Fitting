@@ -5,24 +5,39 @@ import { formatDate } from 'utils/formatDate'
 const FittingHistory = () => {
   const { fittingHistory: history } = useFittingContext()
   return (
-    <div className="p-4 bg-white shadow rounded">
-      <h2 className="text-xl font-bold mb-4">Fitting History</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-gray-100 border rounded-lg">
-          <thead>
-            <tr className="bg-gray-200 text-left">
-              <th className="py-2 px-4">Date</th>
-              <th className="py-2 px-4">Customer Name</th>
-              <th className="py-2 px-4">Status</th>
+    <div className="p-5 bg-gray-50 shadow-lg rounded-md">
+      <h2 className="text-lg font-semibold mb-5 text-gray-700">
+        Fitting History
+      </h2>
+      <div className="overflow-hidden border border-gray-300 rounded-md">
+        <table className="min-w-full bg-white divide-y divide-gray-200">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                Date
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                Customer Name
+              </th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                Status
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200">
             {history.map((item) => (
-              <tr key={item._id} className="border-t">
-                <td className="py-2 px-4">{formatDate(item.date)}</td>
-                <td className="py-2 px-4">{item.customerName}</td>
+              <tr
+                key={item._id}
+                className="cursor-pointer hover:bg-gray-100 transition"
+              >
+                <td className="py-3 px-4 text-sm text-gray-700">
+                  {formatDate(item.date)}
+                </td>
+                <td className="py-3 px-4 text-sm text-gray-700">
+                  {item.customerName}
+                </td>
                 <td
-                  className={`py-2 px-4 ${
+                  className={`py-3 px-4 text-sm font-semibold ${
                     item.status === Status.Completed
                       ? 'text-green-600'
                       : item.status === Status.Scheduled

@@ -3,6 +3,7 @@ import React from 'react'
 import { formatDate } from 'utils/formatDate'
 import { useNavigate } from 'react-router-dom'
 import { useScheduleContext } from 'context/ScheduleContext'
+import { NoContent } from 'components'
 
 const FittingRequests = () => {
   const { fittingRequests } = useFittingContext()
@@ -13,37 +14,67 @@ const FittingRequests = () => {
   }
 
   return (
-    <div className="p-4 bg-white shadow rounded">
-      <h2 className="text-xl font-bold mb-4">Fitting Requests</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-gray-100 border rounded-lg">
-          <thead>
-            <tr className="bg-gray-200 text-left">
-              <th className="py-2 px-4">Date</th>
-              <th className="py-2 px-4">Customer Name</th>
-              <th className="py-2 px-4">Email</th>
-              <th className="py-2 px-4">Phone</th>
-              <th className="py-2 px-4">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fittingRequests.map((request) => (
-              <tr
-                key={request._id}
-                className="border-t cursor-pointer hover:bg-gray-200 transition"
-                onClick={() => handleRowClick(request._id)} // Make the row clickable
-              >
-                <td className="py-2 px-4">{formatDate(request.date)}</td>
-                <td className="py-2 px-4">{request.customerName}</td>
-                <td className="py-2 px-4">{request.email}</td>
-                <td className="py-2 px-4">{request.phone}</td>
-                <td className="py-2 px-4">{request.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <>
+      {fittingRequests.length > 0 ? (
+        <div className="p-5 bg-gray-50 shadow-lg rounded-md">
+          <h2 className="text-lg font-semibold mb-5 text-gray-700">
+            Fitting Requests
+          </h2>
+          <div className="overflow-hidden border border-gray-300 rounded-md">
+            <table className="min-w-full bg-white divide-y divide-gray-200">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                    Customer Name
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                    Phone
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {fittingRequests.map((request, index) => (
+                  <tr
+                    key={request._id}
+                    className={`cursor-pointer ${
+                      index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                    } hover:bg-gray-100 transition`}
+                    onClick={() => handleRowClick(request._id)}
+                  >
+                    <td className="py-3 px-4 text-sm text-gray-700">
+                      {formatDate(request.date)}
+                    </td>
+                    <td className="py-3 px-4 text-sm text-gray-700">
+                      {request.customerName}
+                    </td>
+                    <td className="py-3 px-4 text-sm text-gray-700">
+                      {request.email}
+                    </td>
+                    <td className="py-3 px-4 text-sm text-gray-700">
+                      {request.phone}
+                    </td>
+                    <td className="py-3 px-4 text-sm font-semibold text-gray-800">
+                      {request.status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        <NoContent />
+      )}
+    </>
   )
 }
 

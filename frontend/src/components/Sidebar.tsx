@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Sidebar: React.FC = () => {
   const [links, setLinks] = useState([
@@ -67,14 +67,19 @@ const Sidebar: React.FC = () => {
       ])
     }
   }, [])
+  const location = useLocation()
   return (
-    <aside className="w-1/4 bg-gray-100 p-6 mt-4 fixed left-0 h-full">
-      <ul className="space-y-6">
+    <aside className="w-64 bg-white shadow-lg p-4 fixed left-0 h-full border-r border-gray-200 mt-4">
+      <ul className="space-y-4">
         {links.map((link, index) => (
           <li key={index}>
             <Link
               to={link.to}
-              className="text-blue-600 hover:text-blue-800 font-semibold transition duration-300 ease-in-out transform hover:scale-105"
+              className={`block px-4 py-2 rounded-md font-medium transition duration-200 ${
+                location.pathname === link.to
+                  ? 'bg-blue-100 text-blue-700'
+                  : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
+              }`}
             >
               {link.text}
             </Link>

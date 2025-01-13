@@ -14,6 +14,7 @@ import FittingRequests from './FittingRequests'
 import FittingSchedule from './FittingSchedule'
 import FittingTasks from './FittingTasks'
 import Home from './Home'
+import NoContent from './NoContent'
 export {
   AccountHistory,
   App,
@@ -26,6 +27,7 @@ export {
   Home,
   MainContent,
   MyProfile,
+  NoContent,
   Sidebar,
   ScheduleComponent,
   ScheduleForm,

@@ -37,7 +37,7 @@ type Fitting = {
   email: string
   phone: string
   fittingType: 'swing analysis' | 'club fitting'
-  date: Date
+  date: string
   status: Status
   comments: string
 }
@@ -53,7 +53,7 @@ type FittingSchedule = {
 type FittingHistory = {
   _id: string
   customerName: string
-  date: Date | string
+  date: string
   fittingId: string
   status: Status
   completedAt: string

@@ -17,7 +17,7 @@ import { FittingProvider } from 'context/FittingsContext'
 
 const MainContent: React.FC = () => {
   return (
-    <main className="w-full p-6">
+    <main className="w-full py-6">
       <FittingProvider>
         <Routes>
           <Route path="/getting-started" element={<GettingStarted />} />

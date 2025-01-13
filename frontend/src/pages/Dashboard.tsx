@@ -5,7 +5,7 @@ const App: React.FC = () => {
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <div className="flex ml-[25%] mt-[60px]">
+      <div className="flex ml-[20%] mt-[60px]">
         <Sidebar />
         <MainContent />
       </div>
